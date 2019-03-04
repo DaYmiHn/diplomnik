@@ -9,6 +9,11 @@
 </head>
 <body onload="get_adres();">
 <style>
+@media(max-width: 980px) {
+  .text {
+    font-size: 30px!important;
+  }
+}
 	body {
 		margin:0;
 		font-family: Arial;
@@ -79,11 +84,7 @@
  padding: 10px;
 }
 
-@media(max-width: 980px) {
-  html {
-    font-size: 25px;
-  }
-}
+
 </style>
 	<div class="menu">
 		<div class="item"  onClick="menu('close')"><div class="text">История поездок</div></div>
