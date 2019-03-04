@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+      <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
 	  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 	  <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be"></script>
 </head>
@@ -78,10 +79,10 @@
  padding: 10px;
 }
 
-@media screen and (max-heigth: 1000px) {
-    .text {
-        font-size: 50pt;
-    }
+@media(max-width: 980px) {
+  html {
+    font-size: 16px;
+  }
 }
 </style>
 	<div class="menu">
@@ -105,47 +106,6 @@
 	
 
 <script>
-
-if ("ontouchstart" in document.documentElement) {
-    document.body.classList.add('touch-device');
-
-} else {
-    document.body.classList.add('hover-device');
-}
-if (jQuery('body').hasClass("touch-device")) {
-//Loading height on touch-device
-    function calcFullHeight() {
-        jQuery('.hero-section').css("height", $(window).height());
-    }
-
-    (function($) {
-        calcFullHeight();
-
-        jQuery(window).on('orientationchange', function() {
-            // 500ms timeout for getting the correct height after orientation change
-            setTimeout(function() {
-                calcFullHeight();
-            }, 500);
-
-        });
-    })(jQuery);
-
-} else {
-    jQuery('.hero-section').css("height", "100vh");
-
-
-}
-const showSize = function() {
-  document.querySelectorAll('div').forEach(function(el) {
-    el.querySelector('.size').innerHTML = `${el.offsetHeight}px`;
-  });
-};
-
-document.addEventListener("DOMContentLoaded", showSize);
-
-window.addEventListener('resize', showSize);
-
-
 	$('.overlay').fadeOut(500);
 	function menu(gg){
 		if (gg=='open') {
