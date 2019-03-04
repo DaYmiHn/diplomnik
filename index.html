@@ -130,7 +130,15 @@ if (jQuery('body').hasClass("touch-device")) {
 
 
 }
+const showSize = function() {
+  document.querySelectorAll('div').forEach(function(el) {
+    el.querySelector('.size').innerHTML = `${el.offsetHeight}px`;
+  });
+};
 
+document.addEventListener("DOMContentLoaded", showSize);
+
+window.addEventListener('resize', showSize);
 
 
 	$('.overlay').fadeOut(500);
