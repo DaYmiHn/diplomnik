@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	  <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+	  <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be"></script>
+</head>
+<body onload="get_adres();">
+<style>
+	body {
+		margin:0;
+		font-family: Arial;
+	}
+	.overlay {
+	  position: absolute;
+	  left: 0; right: 0; top: 0; bottom: 0;
+	  background: black;
+	  opacity: .7;
+	}
+
+	.menu {
+		background-color: black;
+		width: 500px;
+		height: 100vh;
+		position: absolute;
+		left: -500px;
+		opacity: 1;
+		z-index: 200;
+	}
+	.item {
+		width: 100%;
+		height: calc(100vh/6);
+		color: white;
+		text-align: center;
+		font-size: 30pt;
+		cursor: pointer;
+	}
+	.item:hover {
+		background-color: white;
+		color: black;
+
+	}
+
+	.text {
+		position: relative;
+		top: 40%;
+	}
+	#YMapsID{
+	/*border: 2px solid black;*/
+    width:100%;
+    height:100vh;
+}
+	#knop{
+		position: absolute;
+		z-index: 151;
+	}
+
+#search-btn {
+  display: inline-block;
+  background-color: red;
+  color: #fff;
+  padding: 5px 5px;
+}
+
+.search-input {
+  padding: 5px 5px;
+  display: inline-block;
+  width: 200px;
+}
+.form {
+ position: absolute;
+ width: 300px;
+ height: 500px;
+ background-color: #fff;
+ z-index: 150;
+ border: 1px solid #000;
+ margin: 20px 20px;
+ padding: 10px;
+}
+</style>
+	<div class="menu">
+		<div class="item"  onClick="menu('close')"><div class="text">История поездок</div></div>
+		<div class="item"><div class="text">Оплата</div></div>
+		<div class="item"><div class="text">Промокоды</div></div>
+		<div class="item"><div class="text">Настройки</div></div>
+		<div class="item"><div class="text">Информация</div></div>
+		<div class="item"><div class="text">Служба поддержки</div></div>
+	</div>
+	
+	<div class="content">
+		<div class="form">
+			<h3>Форма вызова такси</h3>
+			<input type="button" value="Меню" onClick="menu('open')" id="knop">
+			<label for="" id="user_adres"></label>
+		</div>
+		<div id="YMapsID" class="mapsulya"></div>
+	</div>
+	<div class="overlay"  onClick="menu('close')" style="display: none; z-index: 100;"></div>
+	
+
+<script>
+
+	$('.overlay').fadeOut(500);
+	function menu(gg){
+		if (gg=='open') {
+			$('.menu').animate({left: 0,});
+			$('.overlay').fadeIn(500);
+		} else {
+			$('.menu').animate({left: -500,});
+			$('.overlay').fadeOut(500);
+		}
+	}
+
+
+	var adres_user=[];
+	function get_adres(){
+		navigator.geolocation.getCurrentPosition(function(position) {
+	  		adres_user = [position.coords.latitude, position.coords.longitude];
+	  		console.log(adres_user);
+	  		mapshow();
+		});	
+	}
+
+	
+	function mapshow(){
+    document.getElementById('YMapsID').style.display = "";
+    ymaps.ready(init);
+    function init() {
+        var myPlacemark,
+            myMap = new ymaps.Map('YMapsID', {
+                center: adres_user,
+                zoom: 17,
+                controls: [ ]
+            }), mySearchControl = new ymaps.control.SearchControl({
+                options: {
+                    noPlacemark: false,
+                    float: 'bottom',
+                    fitMaxWidth: true
+                }
+            });
+            
+            myMap.controls.add(mySearchControl);
+
+        mySearchControl.events.add('resultselect', function (e) {
+            var index = e.get('index');
+            var coords = mySearchControl.getResult(index)._value.geometry.getCoordinates();
+            setMarker(coords);
+
+        });
+       
+        setMarker = function (coords){
+                myPlacemark = createPlacemark(coords);
+                myMap.geoObjects.add(myPlacemark);
+                myPlacemark.events.add('dragend', function () {
+                    getAddress(myPlacemark.geometry.getCoordinates());
+                });
+            getAddress(coords);
+        }
+        
+        myMap.events.add('click', function (e) {
+            var coords = e.get('coords');
+            setMarker(coords);
+        });
+        setMarker(adres_user);
+        function createPlacemark(coords) {
+            return new ymaps.Placemark(coords, {
+                iconCaption: 'поиск...'
+            }, {
+                preset: 'islands#grayDotIconWithCaption',
+                draggable: true
+            });
+        }
+        var k = 1;
+        function getAddress(coords) {
+            myPlacemark.properties.set('iconCaption', 'поиск...');
+            ymaps.geocode(coords).then(function (res) {
+                var firstGeoObject = res.geoObjects.get(0),
+                        array = firstGeoObject.properties.get('description').split(', '),
+                        country = array[0],
+                    city = array[1];
+                myPlacemark.properties
+                    .set({
+                        iconCaption: firstGeoObject.properties.get('name'),
+                        balloonContent: firstGeoObject.properties.get('text')
+                    });
+                
+                switch(k) {
+                  case 0:
+                    alert("Ошибочка");
+                    break;
+
+                  case 1:  
+                    a = firstGeoObject.properties.get('name');
+                    $('#adress_a').val(firstGeoObject.properties.get('name'));
+                    k++;
+                    break;
+
+                  case 2: 
+                    b = firstGeoObject.properties.get('name');
+                    $('#adress_b').val(firstGeoObject.properties.get('name'));
+                    document.getElementById('YMapsID').style.display = "none";
+                    marshrut(a,b);
+                    break;
+
+                  default:
+                    alert("Ошибочка");
+                    break;
+                }
+               
+            });
+        }
+    }
+}
+
+</script>
+</body>
+</html>
+
+
